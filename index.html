@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Budget App</h1>
+
+        <!-- Set Monthly Budget -->
+        <div class="input-group">
+            <label for="monthly_budget">Set Monthly Budget:</label>
+            <input type="number" id="monthly_budget" placeholder="Enter your budget">
+            <button id="set_budget">Set Budget</button>
+        </div>
+
+        <!-- Display Budget Info -->
+        <h2>Budget Overview</h2>
+        <table>
+            <tr>
+                <td>Budget:</td>
+                <td id="budget_value">$0</td>
+            </tr>
+            <tr>
+                <td>Total Income:</td>
+                <td id="total_income">$0</td>
+            </tr>
+            <tr>
+                <td>Total Expenses:</td>
+                <td id="total_expenses">$0</td>
+            </tr>
+            <tr>
+                <td>Remaining Balance:</td>
+                <td id="remaining_balance">$0</td>
+            </tr>
+        </table>
+
+        <!-- Add Income Section -->
+        <div class="input-group">
+            <label for="income_name">Income Source:</label>
+            <input type="text" id="income_name" placeholder="Enter income source">
+            <label for="income_amount">Amount:</label>
+            <input type="number" id="income_amount" placeholder="Enter amount">
+            <button id="add_income">Add Income</button>
+        </div>
+
+        <!-- Add Expense Section -->
+        <div class="input-group">
+            <label for="expense_name">Expense Name:</label>
+            <input type="text" id="expense_name" placeholder="Enter expense name">
+            <label for="expense_amount">Amount:</label>
+            <input type="number" id="expense_amount" placeholder="Enter amount">
+            <button id="add_expense">Add Expense</button>
+        </div>
+
+        <!-- Table for Expenses and Income -->
+        <h2>Details</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="details_table"></tbody>
+        </table>
+
+        <!-- Chart -->
+        <h2>Expense Chart</h2>
+        <canvas id="chart_div" width="400" height="400"></canvas> <!-- Only canvas here for the chart -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+</html>
