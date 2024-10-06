@@ -43,7 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     budgetValue.innerText = `$${budget}`;
     totalIncomeDisplay.innerText = `$${totalIncome}`;
     totalExpensesDisplay.innerText = `$${totalExpenses}`;
-    updateRemainingBalance();
+    
+    // Call this function after initializing totalIncome and totalExpenses
+    updateRemainingBalance(); 
     updateDetailsTable();
     updateChart(); // Chart is initialized, so we can update it here
 
@@ -71,47 +73,101 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDetailsTable();
     });
 
-    // Add Expense
+    // Add Expense with Warning if Budget Surpassed
     addExpenseBtn.addEventListener('click', function() {
-        const expenseName = expenseNameInput.value;
-        const expenseAmount = parseFloat(expenseAmountInput.value);
+       const expenseName = expenseNameInput.value;
+       const expenseAmount = parseFloat(expenseAmountInput.value);
 
-        totalExpenses += expenseAmount;
-        details.push({ name: expenseName, type: 'Expense', amount: expenseAmount });
+       // Allow the user to add the expense but show a warning if it exceeds the budget
+       totalExpenses += expenseAmount;
+       details.push({ name: expenseName, type: 'Expense', amount: expenseAmount });
 
-        // Add to expenseData for the chart
-        if (expenseData[expenseName]) {
-            expenseData[expenseName] += expenseAmount;
-        } else {
-            expenseData[expenseName] = expenseAmount;
-        }
+       // Add to expenseData for the chart
+       if (expenseData[expenseName]) {
+           expenseData[expenseName] += expenseAmount;
+       } else {
+           expenseData[expenseName] = expenseAmount;
+       }
 
-        localStorage.setItem('totalExpenses', totalExpenses);
-        localStorage.setItem('details', JSON.stringify(details));
+       localStorage.setItem('totalExpenses', totalExpenses);
+       localStorage.setItem('details', JSON.stringify(details));
 
-        totalExpensesDisplay.innerText = `$${totalExpenses}`;
-        updateRemainingBalance();
-        updateDetailsTable();
-        updateChart(); // Update the chart when a new expense is added
+       totalExpensesDisplay.innerText = `$${totalExpenses}`;
+       updateRemainingBalance();
+       updateDetailsTable();
+       updateChart(); // Update the chart when a new expense is added
+
+       // Warn if the total expenses exceed the budget
+       if (totalExpenses > budget) {
+           alert("Warning: You have exceeded your budget!");
+       }
     });
 
     // Update Remaining Balance
     function updateRemainingBalance() {
         const remainingBalance = totalIncome - totalExpenses;
         remainingBalanceDisplay.innerText = `$${remainingBalance.toFixed(2)}`;
+
+        // Check if expenses exceed the budget and show a warning message
+        if (totalExpenses > budget) {
+            alert("Warning: You have exceeded your budget!");
+        }
     }
+    
 
     // Update Details Table
     function updateDetailsTable() {
         detailsTable.innerHTML = '';
-        details.forEach(item => {
+        details.forEach((item, index) => {
             const row = `<tr>
                 <td>${item.name}</td>
                 <td>${item.type}</td>
                 <td>$${item.amount.toFixed(2)}</td>
+                <td><button class="delete-btn" data-index="${index}">Delete</button></td>
             </tr>`;
             detailsTable.innerHTML += row;
         });
+
+        // Add event listener to all delete buttons
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const itemIndex = this.getAttribute('data-index');
+                deleteItem(itemIndex);
+            });
+        });
+    }
+
+    // Delete an item and update totals and chart
+    function deleteItem(index) {
+        const item = details[index];
+        
+        if (item.type === 'Income') {
+            totalIncome -= item.amount;
+            localStorage.setItem('totalIncome', totalIncome);
+            totalIncomeDisplay.innerText = `$${totalIncome}`;
+        } else if (item.type === 'Expense') {
+            totalExpenses -= item.amount;
+
+            // Remove from expenseData for chart
+            if (expenseData[item.name]) {
+                expenseData[item.name] -= item.amount;
+                if (expenseData[item.name] <= 0) {
+                    delete expenseData[item.name]; // Remove the label if the amount is zero or negative
+                }
+            }
+
+            localStorage.setItem('totalExpenses', totalExpenses);
+            totalExpensesDisplay.innerText = `$${totalExpenses}`;
+        }
+
+        // Remove item from details and update localStorage
+        details.splice(index, 1);
+        localStorage.setItem('details', JSON.stringify(details));
+
+        updateRemainingBalance();
+        updateDetailsTable();
+        updateChart();
     }
 
     // Update the pie chart whenever an expense is added
