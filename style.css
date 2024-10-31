@@ -14,6 +14,17 @@ body {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.form-container,
+.account-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 50px;
+    max-width: 400px;
+    text-align: center;
+}
+
 h1, h2 {
     text-align: center;
 }
@@ -30,6 +41,7 @@ input {
     border-radius: 4px;
 }
 
+/* Added Button Styling */
 button {
     width: 100%;
     padding: 10px;
@@ -58,4 +70,49 @@ button:hover {
 
 #total_amount {
     font-weight: bold;
+}
+
+/* Additional Styles for Account Page and Navigation */
+#welcomeMessage {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.account-container p {
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.account-container button {
+    background-color: #ff4b4b;
+}
+
+.account-container button:hover {
+    background-color: #8e82fc;
+}
+
+/* Form Links */
+.form-container p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.form-container a {
+    color: #4caf50;
+}
+
+.form-container a:hover {
+    text-decoration: underline;
+}
+
+/* Navigation Links */
+nav a {
+    color: #4caf50;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
 }
