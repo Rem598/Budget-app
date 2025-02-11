@@ -45,7 +45,7 @@ input {
 button {
     width: 100%;
     padding: 10px;
-    background-color: #400757;
+    background-color: #263124;
     color: white;
     border: none;
     border-radius: 4px;
@@ -53,7 +53,7 @@ button {
 }
 
 button:hover {
-    background-color: #58eb78;
+    background-color: #085e79;
 }
 
 #expense_list {
